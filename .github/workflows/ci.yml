@@ -12,10 +12,10 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: [3.5, 3.6]
+        python-version: [3.6, 3.7]
         include:
-          - python-version: 3.5
-            tox-py: py35
+          - python-version: 3.7
+            tox-py: py37
           - python-version: 3.6
             tox-py: py36
     runs-on: ubuntu-18.04
@@ -33,7 +33,7 @@ jobs:
           ${{ runner.os }}-virtualenvclearcache-${{ matrix.tox-py }}-
     - name: Install dependencies
       run: |
-        python3 -m venv venv
+        python -m venv venv
         . venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -53,11 +53,12 @@ jobs:
     needs: build
     strategy:
         matrix:
-          python-version: [3.5, 3.6]
+          python-version: [3.6, 3.7]
           it-backend: [local, s3, gcs]
+          cassandra-version: [2.2.14, 3.11.7, 'github:apache/trunk']
           include:
-            - python-version: 3.5
-              tox-py: py35
+            - python-version: 3.7
+              tox-py: py37
             - python-version: 3.6
               tox-py: py36
     runs-on: ubuntu-18.04
@@ -80,7 +81,7 @@ jobs:
           ${{ runner.os }}-virtualenvclearcache-${{ matrix.tox-py }}-
     - name: Install dependencies
       run: |
-        python3 -m venv venv
+        python -m venv venv
         . venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
@@ -109,12 +110,12 @@ jobs:
           ccm stop
           if [ "${{ matrix.it-backend }}" == "s3" ]
           then
-            ./run_integration_tests.sh -v --s3 --no-local
+            ./run_integration_tests.sh -v --s3 --no-local -D cassandra-version=${{ matrix.cassandra-version }}
           elif [ "${{ matrix.it-backend }}" == "gcs" ]
           then
-            ./run_integration_tests.sh -v --gcs --no-local
+            ./run_integration_tests.sh -v --gcs --no-local -D cassandra-version=${{ matrix.cassandra-version }}
           else
-            ./run_integration_tests.sh -v
+            ./run_integration_tests.sh -v -D cassandra-version=${{ matrix.cassandra-version }}
           fi
         fi
         
@@ -134,7 +135,7 @@ jobs:
         sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
         sudo chmod +x /usr/local/bin/docker-compose
         sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-        python3 -m venv venv
+        python -m venv venv
         . venv/bin/activate
         python -m pip install --upgrade pip
     - name: Build and publish to pypi
