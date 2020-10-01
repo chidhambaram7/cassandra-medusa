@@ -110,12 +110,12 @@ jobs:
           ccm stop
           if [ "${{ matrix.it-backend }}" == "s3" ]
           then
-            ./run_integration_tests.sh -v --s3 --no-local -D cassandra-version=${{ matrix.cassandra-version }}
+            ./run_integration_tests.sh -v --s3 --no-local --cassandra-version=${{ matrix.cassandra-version }}
           elif [ "${{ matrix.it-backend }}" == "gcs" ]
           then
-            ./run_integration_tests.sh -v --gcs --no-local -D cassandra-version=${{ matrix.cassandra-version }}
+            ./run_integration_tests.sh -v --gcs --no-local --cassandra-version=${{ matrix.cassandra-version }}
           else
-            ./run_integration_tests.sh -v -D cassandra-version=${{ matrix.cassandra-version }}
+            ./run_integration_tests.sh -v --cassandra-version=${{ matrix.cassandra-version }}
           fi
         fi
         
