@@ -387,7 +387,7 @@ Feature: Integration tests
         @local
         Examples: Local storage
         | storage           | client encryption |
-        | local      |  without_client_encryption |
+        | local      |  with_client_encryption |
 
         @s3
         Examples: S3 storage
