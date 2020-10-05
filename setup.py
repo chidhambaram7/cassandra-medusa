@@ -53,6 +53,7 @@ setuptools.setup(
         'pycrypto>=2.6.1',
         'retrying>=1.3.3',
         'parallel-ssh==1.9.1',
+        'ssh2-python==0.19.0', # <-- 0.20.0 is broken, to be updated later (0.21.0+)
         'requests==2.22.0'
     ],
     extras_require={
