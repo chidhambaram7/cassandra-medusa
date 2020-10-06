@@ -12,12 +12,14 @@ jobs:
   build:
     strategy:
       matrix:
-        python-version: [3.6, 3.7]
+        python-version: [3.6, 3.7, 3.8]
         include:
           - python-version: 3.7
             tox-py: py37
           - python-version: 3.6
             tox-py: py36
+          - python-version: 3.8
+            tox-py: py38
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
@@ -57,8 +59,11 @@ jobs:
         matrix:
           python-version: [3.6, 3.7]
           it-backend: [local, s3, gcs]
-          cassandra-version: [2.2.14, 3.11.7]
+          cassandra-version: [2.2.14, 3.11.7, 'github:apache/trunk']
           experimental: [false]
+          exclude:
+            - cassandra-version: 'github:apache/trunk'
+              it-backend: local
           include:
             - python-version: 3.7
               tox-py: py37
@@ -66,6 +71,9 @@ jobs:
               tox-py: py36
             - cassandra-version: 'github:apache/trunk'
               experimental: true
+              python-version: 3.6
+              it-backend: local
+              tox-py: py36
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
