@@ -57,20 +57,15 @@ jobs:
         matrix:
           python-version: [3.6, 3.7]
           it-backend: [local, s3, gcs]
-          cassandra-version: [2.2.14, 3.11.7, 'github:apache/trunk']
-          experimental: [true, false]
-          exclude:
-            - cassandra-version: 'github:apache/trunk'
-              experimental: false
-            - cassandra-version: 2.2.14
-              experimental: true
-            - cassandra-version: 3.11.7
-              experimental: true
+          cassandra-version: [2.2.14, 3.11.7]
+          experimental: [false]
           include:
             - python-version: 3.7
               tox-py: py37
             - python-version: 3.6
               tox-py: py36
+            - cassandra-version: 'github:apache/trunk'
+              experimental: true
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v1
